@@ -1,0 +1,108 @@
+﻿@{
+    var activeDashboardButton="";
+    var activeUserButton="";
+    var activeOrderButton="";
+    var activeCategoryButton="";
+    var activeProductButton=""; 
+    var request = Context.Request.Path.ToString();
+                        
+    if(request.Contains("Dashboard")){
+    activeDashboardButton = "text-light";
+    }
+    if(request.Contains("User")){
+    activeUserButton = "text-light";
+    }
+    if(request.Contains("Order")){
+    activeOrderButton = "text-light";
+    }
+    if(request.Contains("Category")){
+    activeCategoryButton = "text-light";
+    }
+    if(request.Contains("Product")){
+    activeProductButton = "text-light";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Lazmek - Dashboard </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-2 col-xl-2 px-sm-2 px-0 bg-dark-mode border-dark border-end border-1">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white-50 min-vh-100">                    
+                    <a class="navbar-brand font-monospace fw-bolder text-warning justify-content-center align-content-center mb-2">
+                        <img src="/images/Lazmek_Logo.png" width="175px" />
+                    </a>
+                    <ul id="navlist" class="admin-sidebar nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
+                        <li>                               
+                            <a class="@activeDashboardButton nav-link px-0 align-middle" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                                <i class="bi bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                            </a>
+                        </li> 
+                        <li>                               
+                            <a class="@activeUserButton nav-link px-0 align-middle" asp-area="Admin" asp-controller="User" asp-action="Index">
+                                <i class="fs-5 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Users</span> 
+                            </a>
+                        </li>       
+                        <li>
+                            <a class="@activeOrderButton nav-link px-0 align-middle" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                <i class="fs-5 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
+                            </a>                               
+                        </li>                         
+                        <li>                      
+                            <a class="@activeCategoryButton nav-link px-0 align-middle" asp-area="Admin" asp-controller="Category" asp-action="Index">
+                                <i class="fs-5 bi bi-tags-fill"></i> <span class=" ms-1 d-none d-sm-inline">Categories</span>
+                            </a>                               
+                        </li>
+                        <li>                               
+                            <a class="@activeProductButton nav-link px-0 align-middle" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                                <i class=" fs-5 bi bi-collection-fill"></i> <span class="ms-1 d-none d-sm-inline">Products</span>
+                            </a>                               
+                        </li>                                                       
+                        <li>
+                            <a class="nav-link align-middle px-0" asp-area="Customer" asp-controller="Home" asp-action="Index" asp-route-asUser="@true" target="_blank">
+                            <i class="fs-5 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Go to Website</span>                            
+                            </a>                        
+                        </li>
+                    </ul>
+
+                    <div class=" pb-1">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+            <div class="col py-3 bg-dark-mode">
+                <main role="main" class="pb-3 mb-4">
+                    <partial name="_Notifications" />
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.tiny.cloud/1/2smc81gpk08kfr89h5sv2yfs3wmvf5djkcqwlf9drkvbyxee/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>    
+    @await RenderSectionAsync("Scripts", required: false)
+    <script >
+        dou
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+﻿@model HomeIndexVM 
+<div class="px-5">
+    <div class="m-3 overflow-x-auto overflow-y-hidden" style="white-space: nowrap;">
+        <ul class="nav nav-tabs flex-nowrap justify-content-center">
+            @foreach (var category in Model.categories)
+            {
+                if (Model.categorytSelected== category)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link active bg-dark-mode text-white "
+                           asp-controller="Home" asp-action="Index">
+                            @category
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-black"
+                           asp-controller="Home" asp-action="Index"
+                           asp-route-category="@category">
+                            @category
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="row pb-3">    
+        @foreach (var product in Model.products)
+        {
+           <div class="col-lg-3 col-sm-6">
+               <div class="row p-2">
+                    <div class="col-12 p-1">
+                        <div class="card border-0 border-5 border-top rounded shadow p-2">
+                            @if(product.ProductImages!=null && product.ProductImages.Count()!=0){
+                                <img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded" />
+                            }else{
+                                <img src="https://placehold.co/500x600/png" class="card-img-top rounded" style="height:12rem" />
+                            }
+                            <div class="card-body pb-0">
+                                <div class="pl-1">
+                                    <p class="card-title h5 text-dark opacity-75 text-uppercase text-center"> @product.Title</p>
+                                    <p class="card-title  text-warning text-center">By <b>@product.Brand</b></p>
+                                </div>
+                                <div class="pl-1">
+                                    <p class="text-dark opacity-75 text-center mb-0">
+                                        Price : <span class="text-decoration-line-through">@product.ListPrice.ToString("c")</span>
+                                    </p>
+                                </div>
+                                <div class="pl-1">
+                                    <p class="text-dark opacity-75 text-center">
+                                        After discount : <span>@product.Price100.ToString("c")</span>
+                                    </p>
+                                    <p class=" fs-5 text-center">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= Math.Floor(product.Rating))
+                                            {
+                                                <i class="fa-solid fa-star text-warning"></i>
+                                            }
+                                            else if (i == Math.Ceiling(product.Rating) && product.Rating % 1 != 0) 
+                                            {
+                                                <i class="fa-solid fa-star-half-stroke text-warning"></i>
+                                            }
+                                            else 
+                                            {
+                                                <i class="fa-regular fa-star text-warning"></i>
+                                            }
+                                        }
+                                        <span>/ @product.Rating.ToString("0.0")</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <a asp-action="Details" asp-route-producdId=@product.Id class="btn btn-primary bg-dark-mode bg-gradient border-0 form-control">
+                                   View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+           </div>
+        }
+    </div>
+</div>

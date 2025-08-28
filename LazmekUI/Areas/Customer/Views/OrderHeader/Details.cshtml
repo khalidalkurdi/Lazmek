@@ -1,0 +1,157 @@
+﻿@model OrderVM
+<style>
+    input{
+        color:darkgrey !important;
+    }
+</style>
+<div class="px-5 mb-5">
+    <form method="post">
+        <input asp-for="orderHeader.Id" hidden />
+        <br />
+        <div class="row justify-content-center">
+            <div class="card px-0 col-12">
+                <div class="card-header px-3 px-sm-2 bg-dark-mode text-light ml-0">
+                    <div class=" row">
+                        <div class="col-sm-12 d-md-block mb-sm-1 col-md-6 pb-1">
+                            <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
+                        </div>
+                        <div class="col-sm-12 col-md-4 offset-md-2 text-right">
+                            <a asp-area="Customer" asp-controller="OrderHeader" asp-action="Index" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-3 px-sm-2 mx-0">
+                    <div class=" rounded p-2 ">
+                        <div class="row">
+                            <div class="col-12 col-lg-6 pb-4">
+                                <div class="row">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-primary">PickUp Details:</span>
+                                    </h4>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Name</div>
+                                    <div class="col-9">                                 
+                                          <input asp-for="orderHeader.Name" class="form-control" type="text" readonly  />                                   
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Phone</div>
+                                    <div class="col-9">                                 
+                                            <input asp-for="orderHeader.PhoneNumber" class="form-control" type="text" readonly />                                   
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Address</div>
+                                    <div class="col-9">                                   
+                                            <input asp-for="orderHeader.StreetAddress" class="form-control" type="text" readonly />                                    
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">City</div>
+                                    <div class="col-9">                                  
+                                         <input asp-for="orderHeader.City" class="form-control" type="text" readonly />                                    
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Country</div>
+                                    <div class="col-9">                                   
+                                        <input asp-for="orderHeader.Country" class="form-control" type="text" readonly />                                   
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Zip Code</div>
+                                    <div class="col-9">                                    
+                                            <input asp-for="orderHeader.PostalCode" class="form-control" type="text" readonly />                                    
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Email</div>
+                                    <div class="col-9">
+                                        <input asp-for="orderHeader.user.Email" class="form-control" type="text" readonly />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Carrier</div>
+                                    <div class="col-9">                                    
+                                            <input asp-for="orderHeader.Carrier" class="form-control" type="text" readonly />                                   
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Tracking</div>
+                                    <div class="col-9">                                    
+                                        <input asp-for="orderHeader.TrackingNumber" class="form-control" type="text" readonly />                                   
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-md-3 col-5">Order Date</div>
+                                    <div class="col-md-9 col-7">
+                                        <input value="@Model.orderHeader.OrderDate.ToShortDateString()" class="form-control" type="text" readonly />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-md-3 col-5">Shipping Date</div>
+                                    <div class="col-md-9 col-7">
+                                        <input asp-for="orderHeader.ShippingDate" class="form-control" type="text" readonly />
+                                    </div>
+                                </div>                            
+                                <div class="row my-1">                                    
+                                    <div class="col-md-3 col-5">Payment Date</div>
+                                    <div class="col-md-9 col-7">
+                                        <input value="@Model.orderHeader.PaymentDate.ToShortDateString()" class="form-control" type="text" readonly />
+                                    </div>                                    
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-md-3 col-5">Payment Status</div>
+                                    <div class="col-md-9 col-7">
+                                        <input asp-for="orderHeader.PaymentStatus" class=" form-control" type="text" readonly />
+                                    </div>
+                                </div>                            
+                            </div>
+                            <div class="col-12 col-lg-5 offset-lg-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-primary">Order Summary</span>
+                                </h4>
+                                <label class="text-info text-center form-control my-2">Order Status - @Model.orderHeader.OrderStatus </label>
+
+                                <ul class="list-group mb-3">
+                                    @foreach(var detail in Model.orderDetail)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between p-2">
+                                            <div class="row container">
+                                                <div class="col-8">
+
+                                                    <h6 class="my-0 text-primary">@detail.product.Title</h6>
+                                                    <small class="text-muted">Price : @detail.Price</small><br />
+                                                    <small class="text-muted">Quantity : @detail.Count</small>
+                                                </div>
+                                                <div class="col-4 text-end">
+                                                    <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    }
+                                    <li class="list-group-item bg-gold">
+                                        <div class="row container">
+                                            <div class="col-6">
+                                                <h5 class="text-dark">TOTAL </h5>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <h5 class="text-dark">@Model.orderHeader.OrderTotal.ToString("c")</h5>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>                                                     
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+   
+}

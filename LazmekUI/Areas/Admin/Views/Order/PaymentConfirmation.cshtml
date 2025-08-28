@@ -1,0 +1,15 @@
+﻿@model int 
+<div class="container row pt-4 bg-dark-mode text-white">
+    <div class="col-12 text-center">
+        <h1 class="text-white text-center">payment successful!</h1>
+        Your Order Numper IS : @Model
+        <br/>
+        <br/>
+        <img src="~/images/lawn_leaf.jpg" width="65%" />
+    </div>
+    <div class=" col-12 text-center text-bg-warning">
+        Your Payment has been placed Successfully!
+        <a asp-action="Details" asp-route-orderHeaderId="@Model" class="btn btn-primary">Back to Order Details</a>
+    </div>
+</div>
+
