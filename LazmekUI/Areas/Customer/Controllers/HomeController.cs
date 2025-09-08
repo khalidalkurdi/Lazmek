@@ -69,6 +69,7 @@ namespace MyProject.Areas.Customer.Controllers
                 TempData["delete"] = "Not Found Any Matche";
             }
             homeIndexVM.products = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages,Reviews").ToList();
+            homeIndexVM.TopProducts = _unitOfWork.Product.GetAll( includeProperties: "Category,ProductImages,Reviews").Where(p=>p.Rating>4).ToList();
             return View(homeIndexVM);
         }
         [HttpGet]
