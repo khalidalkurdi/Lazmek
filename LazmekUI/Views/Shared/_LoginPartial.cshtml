@@ -6,11 +6,13 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li>
-        <a class="nav-link align-middle mx-2" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                <span class="mx-1 d-none d-sm-inline">Profile</span> <i class=" bi bi-person-lines-fill"></i>
-        </a>
-    </li>   
+    if(User.IsInRole(SD.Role_Customer)){
+        <li>
+            <a class="nav-link align-middle mx-2" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    <span class="mx-1 d-none d-sm-inline">Profile</span> <i class=" bi bi-person-lines-fill"></i>
+            </a>
+        </li>   
+    }
     <li>
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button id="logout" type="submit" class="nav-link align-middle mx-2">

@@ -38,13 +38,12 @@
 
 </head>
 <body>
-
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-2 col-xl-2 px-sm-2 px-0 bg-dark-mode border-dark border-end border-1">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white-50 min-vh-100">                    
+            <div class="col-md-2 px-sm-2 px-0 bg-dark-mode border-dark border-end border-1 ">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white-50 min-vh-100">
                     <a class="navbar-brand font-monospace fw-bolder text-warning justify-content-center align-content-center mb-2">
-                        <img src="/images/Lazmek_Logo.png" width="175px" />
+                        <img src="/images/Lazmek_Logo.png" style=" width:150px; " />
                     </a>
                     <ul id="navlist" class="admin-sidebar nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
                         <li>                               
@@ -77,11 +76,10 @@
                             <i class="fs-5 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Go to Website</span>                            
                             </a>                        
                         </li>
+                        
+                        <partial name="_LoginPartial" />                       
                     </ul>
 
-                    <div class=" pb-1">
-                        <partial name="_LoginPartial" />
-                    </div>
                 </div>
             </div>
             <div class="col py-3 bg-dark-mode">
