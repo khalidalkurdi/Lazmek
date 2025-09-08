@@ -12,6 +12,7 @@ namespace Models
     public class OrderDetail
     {
         public int Id { get; set; }
+
         [ForeignKey(nameof(orderHeader))]
         public int OrderHeaderId { get; set; }
         [ValidateNever]

@@ -10,6 +10,7 @@ namespace Models.ViewModels
     public class HomeIndexVM
     {
        public List<Product> products {  get; set; }
+       public List<Product> TopProducts {  get; set; }
        public List<string> categories {  get; set; }
        public string categorytSelected {  get; set; }
 
