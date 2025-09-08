@@ -4,8 +4,10 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using DataAccess.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,13 +18,16 @@ namespace MyProject.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            IUnitOfWork unitOfWork,
+            SignInManager<IdentityUser> signInManager)            
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -56,20 +61,31 @@ namespace MyProject.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
+            public string Username { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string City { get; set; }
+            public string Country { get; set; }
+            [Display(Name = "Join Date")]
+            public string JoinDate { get; set; }
+            
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
+            var userFromDb = _unitOfWork.ApplicationUser.Get(u => u.Id ==user.Id);
+            
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                Email = userFromDb.Email,
+                PhoneNumber = userFromDb.PhoneNumber,
+                City=userFromDb.City,
+                Country=userFromDb.Country,
+                JoinDate=userFromDb.CreateAt.ToShortDateString(),
+                Name=userFromDb.Name,
+                Username=userFromDb.UserName,
             };
         }
 
@@ -87,7 +103,7 @@ namespace MyProject.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User); 
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -99,17 +115,15 @@ namespace MyProject.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
-
+            
+            var userFromDb = _unitOfWork.ApplicationUser.Get(u => u.Id == user.Id,traked:true);
+            userFromDb.Email = Input.Email;
+            userFromDb.PhoneNumber = Input.PhoneNumber;
+            userFromDb.Name = Input.Name;
+            userFromDb.Country = Input.Country;
+            userFromDb.City = Input.City;
+            _unitOfWork.Save();
+           
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
