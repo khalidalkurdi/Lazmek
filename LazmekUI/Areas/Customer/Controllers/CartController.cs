@@ -132,7 +132,7 @@ namespace MyProject.Areas.Customer.Controllers
             }
             var service = new SessionService();
             Session session = service.Create(options);
-            _unitOfWork.OrderHeader.UpdateStripePaymentId(ShoppingCartVM.orderHeader.Id,session.Id,session.PaymentIntentId);
+            _unitOfWork.OrderHeader.UpdateStripePaymentId(ShoppingCartVM.orderHeader.Id,session.Id,session.PaymentIntentId);            
             _unitOfWork.Save();
             Response.Headers.Add("Location",session.Url);
             return new StatusCodeResult(303);           
@@ -145,12 +145,21 @@ namespace MyProject.Areas.Customer.Controllers
             Session session = service.Get(orderHeadeFromDb.SessionId);
             if (session.PaymentStatus.ToLower()=="paid" )
             {
-
                 _unitOfWork.OrderHeader.UpdateStripePaymentId(orderHeaderId,session.Id,session.PaymentIntentId);
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeaderId,SD.StatusApproved,SD.PaymentStatusApproved);
                 _unitOfWork.Save();
             }
+            
             var cartsFromDb= _unitOfWork.ShoppingCart.GetAll(x=>x.UserID==orderHeadeFromDb.UserID).ToList();
+            foreach(var cart in cartsFromDb)
+            {
+                var productFromDb = _unitOfWork.Product.Get(p=>p.Id==cart.ProductId,traked:true);
+                if (productFromDb.Quantity - cart.Count >= 0)
+                {
+                    productFromDb.Quantity -= cart.Count;
+                }
+                _unitOfWork.Save();                 
+            }
             _unitOfWork.ShoppingCart.RemoveRange(cartsFromDb);
             _unitOfWork.Save();
             HttpContext.Session.Clear();            

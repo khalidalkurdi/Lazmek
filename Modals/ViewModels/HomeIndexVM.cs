@@ -13,6 +13,7 @@ namespace Models.ViewModels
        public List<Product> TopProducts {  get; set; }
        public List<string> categories {  get; set; }
        public string categorytSelected {  get; set; }
+       public bool NotFoundSearch {  get; set; }=true;
 
     }
 }

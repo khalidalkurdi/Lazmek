@@ -22,14 +22,6 @@ namespace MyProject.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Welcome(bool gust=false)
-        {
-            if(gust)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            return View();
-        }
         public IActionResult Base(bool gust=false, bool asUser= false)
         {
             // redirect the user based on his role
@@ -46,11 +38,19 @@ namespace MyProject.Areas.Customer.Controllers
             }                        
             return RedirectToAction(nameof(Welcome));                                           
         }
+        public IActionResult Welcome(bool gust=false)
+        {
+            if(gust)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
         public IActionResult Index(string? search,string? category)
         {
             HomeIndexVM homeIndexVM = new HomeIndexVM
             {
-                categories=_unitOfWork.Category.GetAll().Select(c => c.Name).ToList(),
+                categories=_unitOfWork.Category.GetAll().OrderBy(c=>c.Name).Select(c => c.Name).ToList(),
             };     
             
             if (!string.IsNullOrEmpty(category))
@@ -63,7 +63,8 @@ namespace MyProject.Areas.Customer.Controllers
             {
                 homeIndexVM.products = _unitOfWork.Product.GetAll(p=>EF.Functions.Contains( p.Title,search)|| EF.Functions.Contains(p.Description, search), includeProperties: "Category,ProductImages,Reviews").ToList();
                 if (homeIndexVM.products.Any())
-                {                   
+                {
+                    homeIndexVM.NotFoundSearch = false;                
                     return View(homeIndexVM);
                 }
                 TempData["delete"] = "Not Found Any Matche";

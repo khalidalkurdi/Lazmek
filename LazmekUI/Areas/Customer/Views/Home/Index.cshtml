@@ -1,34 +1,25 @@
 ﻿@model HomeIndexVM 
-<div class="px-5">
-    <div class="m-3 overflow-x-auto overflow-y-hidden" style="white-space: nowrap;">
-        <ul class="nav nav-tabs flex-nowrap justify-content-center">
-            @foreach (var category in Model.categories)
-            {
-                if (Model.categorytSelected== category)
-                {
-                    <li class="nav-item">
-                        <a class="nav-link active bg-dark-mode text-white "
-                           asp-controller="Home" asp-action="Index">
-                            @category
-                        </a>
-                    </li>
+<div class="px-5 mb-5 pb-5">
+    <div class="justify-content-start my-3 d-inline-block">
+        <form asp-controller="Home" asp-action="Index" method="get" >
+            <select name="category" class="form-select" onchange="this.form.submit()">
+                <option selected value="@null">All</option>
+                @foreach(var category in Model.categories){
+                    if (Model.categorytSelected == category)
+                    {
+                        <option value="@category" selected>@category</option>
+                    }
+                    else
+                    {
+                        <option value="@category">@category</option>
+                    }
                 }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-black"
-                           asp-control           ler="Home" asp-action="Index"
-                           asp-route-category="@category">
-                            @category
-                        </a>
-                    </li>
-                }
-            }
-        </ul>
+            </select>
+        </form>
     </div>
-    @if(string.IsNullOrEmpty(Model.categorytSelected)){  
+    @if(string.IsNullOrEmpty(Model.categorytSelected) && Model.NotFoundSearch ){  
         <!--  sm screen -->
-        <div> Randomly </div>
+        <div> suggestions </div>
         <hr />
         <div id="productsCarouselsm" class="carousel slide d-md-none" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -42,7 +33,7 @@
                             }
                             else
                             {
-                                <img src="https://placehold.co/500x600/png" class="card-img-top rounded" style="height:12rem" />
+                                <img src="/images/product_img.jpg" class="card-img-top rounded" style="height:12rem" />
                             }
 
                             <div class="card-body pb-0 text-center">
@@ -119,7 +110,7 @@
                                         }
                                         else
                                         {
-                                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" style="height:12rem" />
+                                            <img src="/images/product_img.jpg" class="card-img-top rounded" style="height:12rem" />
                                         }
 
                                         <div class="card-body pb-0 text-center">
@@ -195,7 +186,7 @@
                             }
                             else
                             {
-                                <img src="https://placehold.co/500x600/png" class="card-img-top rounded" style="height:12rem" />
+                                <img src="/images/product_img.jpg" class="card-img-top rounded" style="height:12rem" />
                             }
 
                             <div class="card-body pb-0 text-center">
@@ -272,7 +263,7 @@
                                         }
                                         else
                                         {
-                                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" style="height:12rem" />
+                                            <img src="/images/product_img.jpg" class="card-img-top rounded" style="height:12rem" />
                                         }
 
                                         <div class="card-body pb-0 text-center">
@@ -347,7 +338,7 @@
                         }
                         else
                         {
-                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" style="height:12rem" />
+                            <img src="/images/product_img.jpg" class="card-img-top rounded" style="height:12rem" />
                         }
 
                         <div class="card-body pb-0 text-center">
